@@ -59,26 +59,70 @@ class Hand:
     def add_card(self, card):
         self.held_hand.append(card)
 
-    def score_hand(self):
+    # def score_hand(self):
         
-        self.score = 0
+    #     self.score = 0
         
-        # find all permutations of cards with ace being 1 and 11
-        # choose best score that is less than 21
+    #     # find all permutations of cards with ace being 1 and 11
+    #     # choose best score that is less than 21
 
         
-        for card in self.held_hand:
-            if type(card[1])==int:
-                self.score+=card[1]
-            elif card[1] == 'J' or card[1] == 'Q' or card[1] == 'K':
-                self.score+=10
-            elif card[1] == 'A':
-                if self.score + 11 <= 21:
-                    self.score+=11
-                elif self.score + 11 > 21:
-                    self.score+=1
+    #     for card in self.held_hand:
+    #         if type(card[1])==int:
+    #             self.score+=card[1]
+    #         elif card[1] == 'J' or card[1] == 'Q' or card[1] == 'K':
+    #             self.score+=10
+    #         elif card[1] == 'A':
+    #             if self.score + 11 <= 21:
+    #                 self.score+=11
+    #             elif self.score + 11 > 21:
+    #                 self.score+=1
         
-        return self.score
+    #     return self.score
+    
+    def score_hand(self):
+        
+        card_values = []
+        num_aces = 0
+        
+        for card in self.held_hand:
+            if type(card[1]) == int:
+                card_values.append(card[1])
+            elif card[1] == 'J' or card[1] == 'Q' or card[1] == 'K':
+                card_values.append(10)
+            elif card[1] == 'A':
+                card_values.append(11)
+                num_aces +=1
+        
+        
+        if sum(card_values)<=21:
+            return sum(card_values)
+        elif sum(card_values)>21 and num_aces>2:
+            return (sum(card_values)-10*(num_aces-1))
+        else:
+            return sum(card_values)
+                
+        
+        
+        # if self.score == 0:
+        #     poss_scores = []
+        #     for index in range(len(self.held_hand)):
+        #         if type(self.held_hand[index])==int:
+        #             poss_scores[index]+=self.held_hand[index]
+        #         elif self.held_hand[index] == 'J' or self.held_hand[index] == 'Q' or self.held_hand[index] == 'K':
+        #             poss_scores[index]+=10
+        #         elif self.held_hand[index] == 'A':
+        #             if poss_scores[index]+11<=21:
+        #                 poss_scores[index]+=11
+        #                 poss_scores[index+1]+=1
+        #             elif poss_scores[index]+1<=21:
+        #                 poss_scores[index]+1
+                        
+                
+                
+                
+                
+                
 
     def discard(self, card):
         self.held_hand.remove(card)
@@ -120,6 +164,9 @@ def run_game():
 	
 	#print player's hand
 	print "Your hand is ", player
+	
+# 	print "player's score is ", player.score_hand()
+# 	print "dealer's score is ", dealer.score_hand()
 	
 	#check for player's blackjack
 	if player.score_hand() == 21:
@@ -177,3 +224,11 @@ def win_game():
 
 
 run_game()
+
+
+# player = Hand()
+# player.add_card(('D','A'))
+# player.add_card(('C','A'))
+# player.add_card(('S','A'))
+# print player
+# print player.score_hand()
